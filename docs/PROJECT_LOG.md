@@ -1027,3 +1027,22 @@
   - `docs/DECISIONS.md`.
 - Первый фокус Stage 6: подготовка Git/GitHub/Netlify, проверка Netlify CLI, deploy configuration и production-проверка таблицы рекордов.
 - DOCX не обновлялся: обновление `.docx` выполняется только по отдельной просьбе заказчика.
+
+### Stage 6. Deployment / Размещение - GitHub repository
+
+Дата: 2026-07-27
+
+- Статус: Applied.
+- GitHub-репозиторий создан: `https://github.com/bihregwork/cod-web-game.git`.
+- Локальный Git-репозиторий инициализирован в `C:\Users\Andrew\Documents\Cod_Web_Game`.
+- Основная ветка: `main`.
+- Remote `origin` подключен к `https://github.com/bihregwork/cod-web-game.git`.
+- `.gitignore` дополнен правилами для логов, Python cache и временных Word lock-файлов.
+- Из staging исключены:
+  - `docs/~$OJECT_PLAN.docx`;
+  - `scripts/__pycache__/`.
+- Первый commit создан: `9283ab3 Initial game release`.
+- Push выполнен успешно: `main -> origin/main`.
+- Рабочее дерево после push чистое.
+- Следующий шаг Stage 6: подключить GitHub-репозиторий к Netlify и проверить build/deploy settings.
+- DOCX не обновлялся: обновление `.docx` выполняется только по отдельной просьбе заказчика.

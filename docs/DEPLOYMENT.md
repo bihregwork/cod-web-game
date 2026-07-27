@@ -27,8 +27,8 @@
 
 | Блок | Проверка | Статус |
 |---|---|---|
-| Git | Проверить рабочее дерево и подготовить изменения к публикации | Pending |
-| Repository | Создать или подключить GitHub-репозиторий | Pending |
+| Git | Проверить рабочее дерево и подготовить изменения к публикации | Passed: initial commit `9283ab3` |
+| Repository | Создать или подключить GitHub-репозиторий | Passed: `https://github.com/bihregwork/cod-web-game.git` |
 | Netlify CLI | Установить или проверить доступность Netlify CLI | Pending |
 | Netlify auth | Авторизоваться в Netlify | Pending |
 | Build config | Проверить `netlify.toml`, build command и publish directory | Pending |
@@ -54,6 +54,15 @@ npm.cmd run build
 - Нужно ли использовать существующий GitHub-аккаунт/репозиторий или создать новый.
 - Установлен ли Netlify CLI, либо устанавливаем его на этом этапе.
 - Нужно ли деплоить сразу в production или сначала сделать draft/preview deploy.
+
+## Выполнено
+
+- Создан GitHub-репозиторий: `https://github.com/bihregwork/cod-web-game.git`.
+- Локальный репозиторий инициализирован на ветке `main`.
+- Remote `origin` подключен к GitHub.
+- Первый commit создан: `9283ab3 Initial game release`.
+- Push выполнен: `main -> origin/main`.
+- Рабочее дерево после push чистое.
 
 ## Условие завершения Stage 6
 
