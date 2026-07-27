@@ -69,6 +69,8 @@ npm.cmd run build
 - Первичная проверка функции рекордов выявила `500`.
 - Исправление функции отправлено в GitHub: `cd734ae Fix Netlify scores function storage`.
 - После автодеплоя Netlify функция `/.netlify/functions/scores` отвечает `200 {"scores":[]}`.
+- Добавлена предзагрузка runtime-ассетов перед стартом игры: `e413044 Preload game assets before start`.
+- Публичная сборка Netlify обновлена и содержит preload-логику.
 
 ## Условие завершения Stage 6
 
