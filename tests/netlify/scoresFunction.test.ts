@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const blobState = vi.hoisted(() => ({ data: null as unknown }));
 
 vi.mock("@netlify/blobs", () => ({
+  connectLambda: vi.fn(),
   getStore: () => ({
     get: async () => blobState.data,
     setJSON: async (_key: string, value: unknown) => {

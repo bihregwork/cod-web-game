@@ -1,4 +1,4 @@
-import { getStore } from "@netlify/blobs";
+import { connectLambda, getStore } from "@netlify/blobs";
 import type { Handler } from "@netlify/functions";
 
 import { normalizeLeaderboard, upsertScore } from "../../src/game/systems/leaderboard";
@@ -9,9 +9,11 @@ const SCORES_KEY = "leaderboard";
 const MAX_SCORE = 999_999_999;
 const PLAYER_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const PLAYER_NAME_PATTERN = /^[\p{L}\p{N} _-]+$/u;
+type LambdaBlobsEvent = Parameters<typeof connectLambda>[0];
 
 export const handler: Handler = async (event) => {
   try {
+    connectLambda(event as typeof event & LambdaBlobsEvent);
     const store = getStore(STORE_NAME);
     const current = await readScores(store);
 
