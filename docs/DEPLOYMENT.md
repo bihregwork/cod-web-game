@@ -29,13 +29,13 @@
 |---|---|---|
 | Git | Проверить рабочее дерево и подготовить изменения к публикации | Passed: initial commit `9283ab3` |
 | Repository | Создать или подключить GitHub-репозиторий | Passed: `https://github.com/bihregwork/cod-web-game.git` |
-| Netlify CLI | Установить или проверить доступность Netlify CLI | Pending |
-| Netlify auth | Авторизоваться в Netlify | Pending |
-| Build config | Проверить `netlify.toml`, build command и publish directory | Pending |
-| Functions | Проверить `/.netlify/functions/scores` в Netlify-среде | Pending |
-| Deploy | Выполнить первый production deploy | Pending |
-| Public URL | Проверить публичную ссылку игры | Pending |
-| Leaderboard | Проверить запись имени, `playerId`, top-10 и общий storage через Netlify Blobs | Pending |
+| Netlify CLI | Установить или проверить доступность Netlify CLI | Skipped: deploy выполнен через Netlify GitHub integration |
+| Netlify auth | Авторизоваться в Netlify | Passed: Netlify GitHub app installed for selected repository |
+| Build config | Проверить `netlify.toml`, build command и publish directory | Passed |
+| Functions | Проверить `/.netlify/functions/scores` в Netlify-среде | Passed: GET returns `200 {"scores":[]}` |
+| Deploy | Выполнить первый production deploy | Passed |
+| Public URL | Проверить публичную ссылку игры | Passed: `https://cod-web-game.netlify.app/` |
+| Leaderboard | Проверить запись имени, `playerId`, top-10 и общий storage через Netlify Blobs | Pending: нужна запись тестового или реального результата |
 | Final acceptance | Заказчик принимает production-релиз | Pending |
 
 ## Предварительные команды
@@ -63,6 +63,12 @@ npm.cmd run build
 - Первый commit создан: `9283ab3 Initial game release`.
 - Push выполнен: `main -> origin/main`.
 - Рабочее дерево после push чистое.
+- Netlify подключен к GitHub-репозиторию через selected repository access.
+- Публичная ссылка: `https://cod-web-game.netlify.app/`.
+- Первичная проверка сайта: `200`, title `Cod Web Game`.
+- Первичная проверка функции рекордов выявила `500`.
+- Исправление функции отправлено в GitHub: `cd734ae Fix Netlify scores function storage`.
+- После автодеплоя Netlify функция `/.netlify/functions/scores` отвечает `200 {"scores":[]}`.
 
 ## Условие завершения Stage 6
 

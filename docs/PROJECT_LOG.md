@@ -1046,3 +1046,29 @@
 - Рабочее дерево после push чистое.
 - Следующий шаг Stage 6: подключить GitHub-репозиторий к Netlify и проверить build/deploy settings.
 - DOCX не обновлялся: обновление `.docx` выполняется только по отдельной просьбе заказчика.
+
+### Stage 6. Deployment / Размещение - Netlify deploy
+
+Дата: 2026-07-27
+
+- Статус: In Progress.
+- Netlify подключен к GitHub-репозиторию `bihregwork/cod-web-game` через selected repository access.
+- Build settings:
+  - Base directory: пусто;
+  - Build command: `npm run build`;
+  - Publish directory: `dist`;
+  - Functions directory: `netlify/functions`.
+- Environment variables не добавлялись: для текущей сборки секреты не нужны.
+- Публичная ссылка получена: `https://cod-web-game.netlify.app/`.
+- Первичная проверка сайта прошла: HTTP `200`, title `Cod Web Game`.
+- Первичная проверка функции `/.netlify/functions/scores` выявила HTTP `500`.
+- Причина: Netlify Blobs в Lambda compatibility mode требует `connectLambda(event)` перед `getStore()`.
+- Исправление внесено в `netlify/functions/scores.ts` и тест `tests/netlify/scoresFunction.test.ts`.
+- Проверки перед push:
+  - targeted tests - 2 files / 8 tests passed;
+  - `npm.cmd run test` - 10 files / 48 tests passed;
+  - `npm.cmd run build` - passed.
+- Исправление отправлено в GitHub: `cd734ae Fix Netlify scores function storage`.
+- После автодеплоя Netlify функция `/.netlify/functions/scores` отвечает HTTP `200` с `{"scores":[]}`.
+- Остается проверить production-запись результата в leaderboard: ввод имени, `playerId`, top-10 и Netlify Blobs storage.
+- DOCX не обновлялся: обновление `.docx` выполняется только по отдельной просьбе заказчика.
