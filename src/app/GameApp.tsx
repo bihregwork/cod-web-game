@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ASSETS } from "../game/data/assets";
 import { BALANCE } from "../game/data/balance";
+import { preloadGameAssets } from "../game/data/preloadAssets";
 import { intersects, missedBottom, type Rect } from "../game/engine/collision";
 import { directionFromKeys } from "../game/engine/input";
 import { createInitialState } from "../game/engine/state";
@@ -78,6 +79,7 @@ export function GameApp() {
   const [leaderboardScores, setLeaderboardScores] = useState<LeaderboardEntry[]>(() => readLocalScores());
   const [scoreSaveMessage, setScoreSaveMessage] = useState("");
   const [confirmRestart, setConfirmRestart] = useState(false);
+  const [assetsReady, setAssetsReady] = useState(false);
   const [resumeAfterRestartCancel, setResumeAfterRestartCancel] = useState<GameMode | null>(null);
   const [leaderboardReturnMode, setLeaderboardReturnMode] = useState<GameMode | null>(null);
 
@@ -485,6 +487,10 @@ export function GameApp() {
   };
 
   const handleStart = () => {
+    if (!assetsReady) {
+      return;
+    }
+
     resetRun({ ...createInitialState(), mode: "playing" });
   };
 
@@ -596,6 +602,20 @@ export function GameApp() {
   const showDebugHitbox = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("debugHitbox") === "1";
 
   useEffect(() => {
+    let isActive = true;
+
+    void preloadGameAssets().finally(() => {
+      if (isActive) {
+        setAssetsReady(true);
+      }
+    });
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  useEffect(() => {
     paintHeroPosition(heroPositionRef.current);
     const frameId = window.requestAnimationFrame(() => {
       measureStageMetrics();
@@ -673,8 +693,9 @@ export function GameApp() {
             onPointerDown={(event) => event.stopPropagation()}
             onPointerUp={(event) => event.stopPropagation()}
             onClick={handleStart}
+            disabled={!assetsReady}
           >
-            Старт
+            {assetsReady ? "Старт" : "Загрузка"}
           </button>
         ) : null}
 
