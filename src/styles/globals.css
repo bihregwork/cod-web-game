@@ -248,7 +248,7 @@ button {
 .machine-panel {
   top: 24px;
   right: 16px;
-  width: 365px;
+  width: 364px;
 }
 
 .machine-panel.active {
@@ -291,10 +291,10 @@ button {
 .fuel-readout {
   position: absolute;
   top: 12px;
-  left: 251px;
+  right: calc(100% - (20px + 5 * 44px + 66px + 5 * 8px));
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 11px;
 }
 
 .fuel-readout img {
@@ -419,10 +419,10 @@ button {
 .hero {
   --wallet-x: 77%;
   --wallet-y: 30%;
-  --wallet-width: 150px;
-  --wallet-height: 105px;
-  --wallet-offset-x: -27.5px;
-  --wallet-offset-y: -2.5px;
+  --wallet-width: 140px;
+  --wallet-height: 100px;
+  --wallet-offset-x: -22.5px;
+  --wallet-offset-y: 0px;
   --hero-center-x: 50cqw;
   position: absolute;
   left: 0;
@@ -447,10 +447,10 @@ button {
 .hero-car {
   --wallet-x: 60%;
   --wallet-y: 34%;
-  --wallet-width: 150px;
-  --wallet-height: 105px;
-  --wallet-offset-x: 22.5px;
-  --wallet-offset-y: -2.5px;
+  --wallet-width: 140px;
+  --wallet-height: 100px;
+  --wallet-offset-x: 17.5px;
+  --wallet-offset-y: 0px;
 }
 
 .hero-car img {
@@ -993,19 +993,24 @@ button {
   }
 
   .hud-panel {
-    height: clamp(78px, 14.17vw, 102px);
+    height: clamp(66px, 11.8vw, 84px);
   }
 
   .score-panel {
     top: clamp(10px, 2.5vw, 18px);
     left: clamp(4px, 1.11vw, 8px);
-    width: min(280px, 44vw);
+    width: min(278px, calc(47vw - 2px));
   }
 
   .machine-panel {
     top: clamp(10px, 2.5vw, 18px);
-    right: clamp(5px, 1.39vw, 10px);
-    width: min(335px, 46.53vw);
+    right: calc(clamp(5px, 1.39vw, 10px) + 1px);
+    width: min(384px, calc(50vw - 6px));
+  }
+
+  .promo-action-panel {
+    transform: translateY(10px) scale(0.8);
+    transform-origin: center center;
   }
 
   .score-label,
@@ -1032,16 +1037,16 @@ button {
   }
 
   .hearts {
-    top: clamp(44px, 9.03vw, 65px);
+    top: clamp(24px, 4.5vw, 32px);
     left: clamp(10px, 2.5vw, 18px);
     gap: clamp(4px, 0.83vw, 6px);
-    font-size: clamp(20px, 3.89vw, 28px);
+    font-size: clamp(36px, 7.01vw, 50px);
   }
 
   .hud-controls {
-    top: clamp(42px, 8.19vw, 59px);
+    top: clamp(34px, 6.4vw, 46px);
     left: auto;
-    right: clamp(6px, 1.67vw, 12px);
+    right: calc(clamp(6px, 1.67vw, 12px) + 2px);
     gap: clamp(4px, 1.11vw, 8px);
   }
 
@@ -1058,8 +1063,8 @@ button {
   }
 
   .hud-button {
-    width: clamp(26px, 5vw, 36px);
-    height: clamp(26px, 5vw, 36px);
+    width: clamp(24px, 4.58vw, 33px);
+    height: clamp(24px, 4.58vw, 33px);
     border-radius: 6px;
   }
 
@@ -1085,26 +1090,28 @@ button {
 
   .machine-title {
     top: clamp(10px, 2.08vw, 15px);
-    left: clamp(9px, 2.5vw, 18px);
+    left: calc(clamp(9px, 2.5vw, 18px) - 2px);
   }
 
   .machine-status {
+    display: none;
     top: clamp(28px, 5.28vw, 38px);
-    left: clamp(10px, 2.5vw, 18px);
+    left: calc(clamp(10px, 2.5vw, 18px) - 2px);
     width: clamp(112px, 25vw, 180px);
-    display: block;
     color: var(--hud-muted);
     font-size: clamp(9px, 1.81vw, 13px);
   }
 
   .machine-panel.needs-fuel .machine-status {
-    left: clamp(10px, 2.5vw, 18px);
+    left: calc(clamp(10px, 2.5vw, 18px) - 2px);
   }
 
   .fuel-readout {
     top: clamp(8px, 1.94vw, 14px);
-    left: clamp(140px, 34.17vw, 246px);
-    gap: clamp(3px, 0.83vw, 6px);
+    right: calc(100% - ((clamp(9px, 2.5vw, 18px) - 2px) + 5 * clamp(24px, 4.58vw, 33px) + clamp(33px, 6.25vw, 45px) + 5 * clamp(3px, 0.83vw, 6px)));
+    left: auto;
+    gap: clamp(7px, 1.4vw, 10px);
+    white-space: nowrap;
   }
 
   .fuel-readout img {
@@ -1113,12 +1120,13 @@ button {
   }
 
   .fuel-readout b {
-    font-size: clamp(10px, 2.08vw, 15px);
+    font-size: clamp(9px, 1.85vw, 14px);
+    line-height: 1;
   }
 
   .machine-slots {
-    top: clamp(43px, 8.06vw, 58px);
-    left: clamp(9px, 2.5vw, 18px);
+    top: clamp(34px, 6.4vw, 46px);
+    left: calc(clamp(9px, 2.5vw, 18px) - 2px);
     gap: clamp(3px, 0.83vw, 6px);
   }
 
@@ -1261,9 +1269,10 @@ button {
 
 @media (max-width: 430px) {
   .hearts {
+    top: 29px;
     left: 10px;
     gap: 2px;
-    font-size: 16px;
+    font-size: 29px;
   }
 
   .hud-controls {
@@ -1273,8 +1282,8 @@ button {
   }
 
   .hud-button {
-    width: 21px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border-radius: 5px;
   }
 
@@ -1290,7 +1299,7 @@ button {
   }
 
   .outlined-icon {
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
   }
 }
