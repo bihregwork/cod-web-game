@@ -93,7 +93,7 @@ button {
 .score-panel {
   top: 24px;
   left: 24px;
-  width: 365px;
+  width: 316px;
 }
 
 .score-label,
@@ -113,12 +113,12 @@ button {
 
 .score-value {
   position: absolute;
-  top: 4px;
-  left: 116px;
+  top: 14px;
+  left: 20px;
   color: var(--hud-dark);
-  font-size: 34px;
+  font-size: 24px;
   line-height: 1;
-  font-weight: 900;
+  font-weight: 850;
   white-space: nowrap;
 }
 
@@ -130,18 +130,18 @@ button {
 .hearts {
   position: absolute;
   top: 57px;
-  left: 108px;
+  left: 20px;
   display: flex;
-  gap: 8px;
+  gap: 6px;
   color: var(--heart);
-  font-size: 33px;
+  font-size: 39.6px;
   line-height: 1;
 }
 
 .hud-controls {
   position: absolute;
   top: 52px;
-  left: 205px;
+  left: 144px;
   display: flex;
   gap: 10px;
 }
@@ -597,9 +597,9 @@ button {
 
 .restart-confirm-panel {
   position: relative;
-  width: min(345px, 100%);
+  width: min(339px, 100%);
   min-height: 142px;
-  padding: 30px 190px 17px 22px;
+  padding: 30px 22px 17px 184px;
   overflow: visible;
   transform: translateY(10px);
 }
@@ -610,11 +610,74 @@ button {
 
 .restart-confirm-panel h2 {
   margin-bottom: 10px;
+  text-align: center;
+}
+
+.promo-action-panel {
+  position: relative;
+  width: min(339px, 100%);
+  min-height: 142px;
+  padding: 0 22px 0 184px;
+  overflow: visible;
+  display: grid;
+  align-items: center;
+  transform: translateY(10px);
+}
+
+.promo-action-content {
+  display: flex;
+  justify-content: center;
+}
+
+.pause-restart-actions {
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.promo-action-button {
+  width: 121.25px;
+  height: 42px;
+  font-size: 22px;
+}
+
+.promo-loading {
+  width: 120px;
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  color: var(--hud-dark);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.promo-loading-label {
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.promo-loading-bar {
+  width: 120px;
+  height: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(90, 98, 112, 0.42);
+  border-radius: 999px;
+  background: rgba(90, 98, 112, 0.18);
+  box-shadow: inset 0 1px 1px rgba(30, 37, 50, 0.12);
+}
+
+.promo-loading-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--hud-yellow);
+  box-shadow: inset 0 1px 0 var(--hud-yellow-light);
+  transition: width 160ms ease;
 }
 
 .restart-confirm-car-button {
   position: absolute;
-  right: 20px;
+  left: 20px;
   top: 50%;
   z-index: 2;
   width: 177px;
@@ -647,7 +710,7 @@ button {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: right bottom;
+  object-position: left bottom;
   filter: drop-shadow(0 7px 6px rgba(30, 37, 50, 0.2));
   transition: transform 160ms ease;
 }
@@ -664,7 +727,7 @@ button {
 
 .restart-confirm-tooltip {
   position: absolute;
-  right: -108px;
+  left: 72px;
   top: -107px;
   z-index: 1;
   width: 188px;
@@ -683,7 +746,7 @@ button {
   isolation: isolate;
   pointer-events: none;
   transform: translate(2px, 4px) rotate(-4deg) scale(0.96);
-  transform-origin: right bottom;
+  transform-origin: left bottom;
   transition:
     opacity 140ms ease,
     transform 140ms ease;
@@ -820,7 +883,8 @@ button {
   cursor: pointer;
 }
 
-.restart-confirm-panel .modal-button {
+.restart-confirm-panel .modal-button,
+.promo-action-panel .modal-button {
   box-shadow: 0 3px 0 rgba(90, 98, 112, 0.22);
   transition:
     transform 160ms ease,
@@ -831,16 +895,25 @@ button {
 }
 
 .restart-confirm-panel .modal-button:hover,
-.restart-confirm-panel .modal-button:focus-visible {
+.restart-confirm-panel .modal-button:focus-visible,
+.promo-action-panel .modal-button:hover,
+.promo-action-panel .modal-button:focus-visible {
   background: rgba(255, 252, 237, 0.98);
   border-color: rgba(90, 98, 112, 0.95);
   box-shadow: 0 6px 8px rgba(30, 37, 50, 0.16);
   transform: translateY(-2px) scale(1.03);
 }
 
-.restart-confirm-panel .modal-button:active {
+.restart-confirm-panel .modal-button:active,
+.promo-action-panel .modal-button:active {
   box-shadow: 0 1px 0 rgba(90, 98, 112, 0.2);
   transform: translateY(1px) scale(0.98);
+}
+
+.promo-action-panel .modal-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
 }
 
 .modal-button.primary {
@@ -849,7 +922,9 @@ button {
 }
 
 .restart-confirm-panel .modal-button.primary:hover,
-.restart-confirm-panel .modal-button.primary:focus-visible {
+.restart-confirm-panel .modal-button.primary:focus-visible,
+.promo-action-panel .modal-button.primary:hover,
+.promo-action-panel .modal-button.primary:focus-visible {
   background: var(--hud-yellow-light);
   border-color: #b98418;
 }
@@ -857,6 +932,42 @@ button {
 .modal-actions {
   display: flex;
   gap: 8px;
+}
+
+@media (min-width: 761px) {
+  .game-stage {
+    --desktop-visual-scale: 0.8;
+  }
+
+  .game-title-image {
+    top: min(51px, 3.55cqw);
+    width: min(431px, 29.94cqw);
+  }
+
+  .score-panel {
+    top: 19px;
+    left: 12px;
+    transform: scale(var(--desktop-visual-scale));
+    transform-origin: top left;
+  }
+
+  .machine-panel {
+    top: 19px;
+    right: 13px;
+    transform: scale(var(--desktop-visual-scale));
+    transform-origin: top right;
+  }
+
+  .restart-confirm-panel,
+  .promo-action-panel {
+    transform: translateY(8px) scale(var(--desktop-visual-scale));
+    transform-origin: center center;
+  }
+
+  .floating-text {
+    padding: 6px 10px;
+    font-size: 18px;
+  }
 }
 
 @media (max-width: 760px) {
@@ -887,8 +998,8 @@ button {
 
   .score-panel {
     top: clamp(10px, 2.5vw, 18px);
-    left: clamp(5px, 1.39vw, 10px);
-    width: min(350px, 48.61vw);
+    left: clamp(4px, 1.11vw, 8px);
+    width: min(280px, 44vw);
   }
 
   .machine-panel {
@@ -909,9 +1020,10 @@ button {
   }
 
   .score-value {
-    top: clamp(5px, 1.11vw, 8px);
-    left: clamp(64px, 15.56vw, 112px);
-    font-size: clamp(20px, 4.72vw, 34px);
+    top: clamp(10px, 2.08vw, 15px);
+    left: clamp(9px, 2.5vw, 18px);
+    font-size: clamp(15px, 3.33vw, 24px);
+    font-weight: 850;
   }
 
   .lives-label {
@@ -921,14 +1033,15 @@ button {
 
   .hearts {
     top: clamp(44px, 9.03vw, 65px);
-    left: clamp(59px, 14.44vw, 104px);
+    left: clamp(10px, 2.5vw, 18px);
     gap: clamp(4px, 0.83vw, 6px);
     font-size: clamp(20px, 3.89vw, 28px);
   }
 
   .hud-controls {
     top: clamp(42px, 8.19vw, 59px);
-    left: clamp(126px, 30.56vw, 220px);
+    left: auto;
+    right: clamp(6px, 1.67vw, 12px);
     gap: clamp(4px, 1.11vw, 8px);
   }
 
@@ -1148,7 +1261,7 @@ button {
 
 @media (max-width: 430px) {
   .hearts {
-    left: 64px;
+    left: 10px;
     gap: 2px;
     font-size: 16px;
   }

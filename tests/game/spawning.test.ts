@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { GAME_ITEMS } from "../../src/game/data/items";
 import { createInitialState } from "../../src/game/engine/state";
-import { availableCatchableSpawnZones, canSpawnCarPartByTime, carPartSpawnChance, itemFallSpeed, pickSpawnItem, shouldForceFuelCan } from "../../src/game/systems/spawning";
+import { availableCatchableSpawnZones, canSpawnCarPartByTime, carPartSpawnChance, itemFallSpeed, itemSize, pickSpawnItem, shouldForceFuelCan } from "../../src/game/systems/spawning";
 import type { FallingItem, ItemId } from "../../src/game/types";
 
 function item(id: ItemId) {
@@ -96,6 +96,17 @@ describe("hazard mix", () => {
 describe("fuel can movement", () => {
   it("falls 15 percent slower than ordinary lightweight items", () => {
     expect(itemFallSpeed("fuelCan", 1, 810)).toBeCloseTo(itemFallSpeed("bill500", 1, 810) * 0.85);
+  });
+});
+
+describe("item visual scale", () => {
+  it("uses desktop 80 percent visual scale for falling item dimensions", () => {
+    expect(itemSize("bill500", 1200)).toBe(61);
+    expect(itemSize("kitchen", 1200)).toBe(98);
+  });
+
+  it("keeps the accepted mobile scale separate from desktop item scale", () => {
+    expect(itemSize("bill500", 720)).toBe(58);
   });
 });
 

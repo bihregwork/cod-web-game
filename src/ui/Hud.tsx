@@ -29,9 +29,7 @@ export function Hud({ score, lives, fuel, missedCatchableItems, carMode, paused,
   return (
     <div className="hud-layer" onPointerDown={(event) => event.stopPropagation()}>
       <div className="hud-panel score-panel">
-        <span className="score-label">Очки</span>
         <strong className="score-value">{score.toLocaleString("ru-RU")}</strong>
-        <span className="lives-label">Жизни</span>
         <div className="hearts" aria-label={`Жизни: ${lives}`}>
           {Array.from({ length: lives }).map((_, index) => (
             <span key={index} aria-hidden="true">

@@ -1,5 +1,5 @@
 import { GameOverlay } from "./GameOverlay";
-import { ASSETS } from "../game/data/assets";
+import { PromoCarLink } from "./PromoCarLink";
 
 type ConfirmRestartModalProps = {
   onConfirm: () => void;
@@ -20,27 +20,7 @@ export function ConfirmRestartModal({ onConfirm, onCancel }: ConfirmRestartModal
             </button>
           </div>
         </div>
-        <a
-          href="https://tomsk-mebel70.ru/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="restart-confirm-car-button"
-          aria-label="Закажи классную мебель"
-          aria-describedby="restart-confirm-car-tooltip"
-          onPointerUp={(event) => event.currentTarget.blur()}
-          onClick={(event) => window.setTimeout(() => event.currentTarget.blur(), 0)}
-        >
-          <img className="restart-confirm-car" src={ASSETS.characters.heroineCar} alt="" aria-hidden="true" />
-        </a>
-        <span id="restart-confirm-car-tooltip" className="restart-confirm-tooltip" role="tooltip">
-          <span className="restart-confirm-tooltip-text">
-            Закажи
-            <br />
-            классную
-            <br />
-            мебель!)
-          </span>
-        </span>
+        <PromoCarLink tooltipId="restart-confirm-car-tooltip" label="Закажи классную мебель" lines={["Закажи", "классную", "мебель!"]} />
       </div>
     </GameOverlay>
   );

@@ -3,13 +3,39 @@ import { ASSETS } from "./assets";
 const IMAGE_ASSET_URLS = uniqueAssetUrls(collectAssetUrls(ASSETS));
 
 let preloadPromise: Promise<void> | null = null;
+let loadedAssetCount = 0;
 
-export function preloadGameAssets(): Promise<void> {
-  if (!preloadPromise) {
-    preloadPromise = Promise.all(IMAGE_ASSET_URLS.map(preloadImage)).then(() => undefined);
+type PreloadProgressCallback = (progress: number) => void;
+
+const progressSubscribers = new Set<PreloadProgressCallback>();
+
+export function preloadGameAssets(onProgress?: PreloadProgressCallback): Promise<void> {
+  if (onProgress) {
+    progressSubscribers.add(onProgress);
+    onProgress(assetLoadProgress());
   }
 
-  return preloadPromise;
+  if (!preloadPromise) {
+    preloadPromise = Promise.all(
+      IMAGE_ASSET_URLS.map((src) =>
+        preloadImage(src).finally(() => {
+          loadedAssetCount += 1;
+          notifyProgress();
+        }),
+      ),
+    ).then(() => {
+      loadedAssetCount = IMAGE_ASSET_URLS.length;
+      notifyProgress();
+    });
+  }
+
+  return preloadPromise.then(() => {
+    onProgress?.(100);
+  }).finally(() => {
+    if (onProgress) {
+      progressSubscribers.delete(onProgress);
+    }
+  });
 }
 
 export function gameAssetUrls(): string[] {
@@ -31,6 +57,21 @@ function preloadImage(src: string): Promise<void> {
     image.onerror = () => resolve();
     image.src = src;
   });
+}
+
+function assetLoadProgress(): number {
+  if (IMAGE_ASSET_URLS.length === 0) {
+    return 100;
+  }
+
+  return Math.round((loadedAssetCount / IMAGE_ASSET_URLS.length) * 100);
+}
+
+function notifyProgress(): void {
+  const progress = assetLoadProgress();
+  for (const subscriber of progressSubscribers) {
+    subscriber(progress);
+  }
 }
 
 function collectAssetUrls(value: unknown): string[] {

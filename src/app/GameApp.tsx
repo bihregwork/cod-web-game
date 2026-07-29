@@ -16,10 +16,11 @@ import { fetchScores, submitScore } from "../services/leaderboardApi";
 import { readLocalScores, submitLocalScore } from "../services/localLeaderboard";
 import { readPendingScore } from "../services/pendingScore";
 import { getCurrentPlayerProfile, getOrCreatePlayerProfile, validatePlayerName, type PlayerProfile } from "../services/playerIdentity";
-import { ConfirmRestartModal } from "../ui/ConfirmRestartModal";
 import { GameOverModal } from "../ui/GameOverModal";
 import { Hud } from "../ui/Hud";
 import { LeaderboardModal } from "../ui/LeaderboardModal";
+import { PauseRestartPanel } from "../ui/PauseRestartPanel";
+import { PromoActionPanel } from "../ui/PromoActionPanel";
 
 const DAMAGE_COOLDOWN_MS = 700;
 
@@ -78,9 +79,8 @@ export function GameApp() {
   const [playerName, setPlayerName] = useState(() => currentProfile.name);
   const [leaderboardScores, setLeaderboardScores] = useState<LeaderboardEntry[]>(() => readLocalScores());
   const [scoreSaveMessage, setScoreSaveMessage] = useState("");
-  const [confirmRestart, setConfirmRestart] = useState(false);
   const [assetsReady, setAssetsReady] = useState(false);
-  const [resumeAfterRestartCancel, setResumeAfterRestartCancel] = useState<GameMode | null>(null);
+  const [assetLoadProgress, setAssetLoadProgress] = useState(0);
   const [leaderboardReturnMode, setLeaderboardReturnMode] = useState<GameMode | null>(null);
 
   const stageRef = useRef<HTMLElement | null>(null);
@@ -91,7 +91,6 @@ export function GameApp() {
   const gameStateRef = useRef(gameState);
   const renderedGameStateRef = useRef(gameState);
   const resumeModeRef = useRef(resumeMode);
-  const confirmRestartRef = useRef(confirmRestart);
   const heroPositionRef = useRef(0.5);
   const fallingItemsRef = useRef(fallingItems);
   const floatingTextsRef = useRef(floatingTexts);
@@ -195,10 +194,6 @@ export function GameApp() {
     walletMetricsRef.current = walletMetrics;
     return walletMetrics;
   }, [measureStageMetrics]);
-
-  useEffect(() => {
-    confirmRestartRef.current = confirmRestart;
-  }, [confirmRestart]);
 
   const refreshScores = useCallback(async () => {
     try {
@@ -447,10 +442,6 @@ export function GameApp() {
   };
 
   const handleSpaceAction = () => {
-    if (confirmRestartRef.current) {
-      return;
-    }
-
     const currentMode = gameStateRef.current.mode;
 
     if (currentMode === "idle" || currentMode === "gameOver") {
@@ -511,33 +502,18 @@ export function GameApp() {
     if (currentMode === "playing" || currentMode === "car") {
       commitResumeMode(currentMode);
       commitGameState({ ...gameStateRef.current, mode: "paused" });
-      setResumeAfterRestartCancel(currentMode);
-      setConfirmRestart(true);
       return;
     }
 
     if (currentMode === "paused" && (resumeModeRef.current === "playing" || resumeModeRef.current === "car")) {
-      setResumeAfterRestartCancel(null);
-      setConfirmRestart(true);
       return;
     }
 
     resetRun();
   };
 
-  const confirmRestartRun = () => {
-    setConfirmRestart(false);
-    setResumeAfterRestartCancel(null);
+  const handlePanelRestart = () => {
     resetRun();
-  };
-
-  const cancelRestartRun = () => {
-    const modeToResume = resumeAfterRestartCancel;
-    setConfirmRestart(false);
-    setResumeAfterRestartCancel(null);
-    if (modeToResume) {
-      commitGameState({ ...gameStateRef.current, mode: modeToResume });
-    }
   };
 
   const handleLeaderboard = () => {
@@ -604,8 +580,13 @@ export function GameApp() {
   useEffect(() => {
     let isActive = true;
 
-    void preloadGameAssets().finally(() => {
+    void preloadGameAssets((progress) => {
       if (isActive) {
+        setAssetLoadProgress(progress);
+      }
+    }).finally(() => {
+      if (isActive) {
+        setAssetLoadProgress(100);
         setAssetsReady(true);
       }
     });
@@ -687,22 +668,20 @@ export function GameApp() {
         </div>
 
         {gameState.mode === "idle" ? (
-          <button
-            type="button"
-            className="start-action"
-            onPointerDown={(event) => event.stopPropagation()}
-            onPointerUp={(event) => event.stopPropagation()}
-            onClick={handleStart}
-            disabled={!assetsReady}
-          >
-            {assetsReady ? "Старт" : "Загрузка"}
-          </button>
+          <div className="modal-layer" onPointerDown={(event) => event.stopPropagation()}>
+            <PromoActionPanel
+              label="Старт"
+              disabled={!assetsReady}
+              loadingProgress={assetsReady ? undefined : assetLoadProgress}
+              onAction={handleStart}
+              tooltipId="start-car-tooltip"
+            />
+          </div>
         ) : null}
 
-        {isPaused ? <div className="state-ribbon">Пауза</div> : null}
-        {confirmRestart ? (
+        {isPaused ? (
           <div className="modal-layer" onPointerDown={(event) => event.stopPropagation()}>
-            <ConfirmRestartModal onConfirm={confirmRestartRun} onCancel={cancelRestartRun} />
+            <PauseRestartPanel onPause={handlePause} onRestart={handlePanelRestart} />
           </div>
         ) : null}
         {gameState.mode === "leaderboard" ? (

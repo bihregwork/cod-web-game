@@ -24,6 +24,7 @@ const BILLS: ItemId[] = ["bill500", "bill500", "bill500", "bill1000", "bill1000"
 const FURNITURE: ItemId[] = ["mirror", "mirror", "hallway", "hallway", "kitchen"];
 const SPAWN_ZONES: SpawnZone[] = ["left", "center", "right"];
 const SINGLE_ACTIVE_ITEM_IDS = new Set<ItemId>(["contract", "kitchen", "carBody"]);
+const DESKTOP_ITEM_SCALE = 0.8;
 
 export function pickWeightedItem(random = Math.random): GameItem {
   const total = GAME_ITEMS.reduce((sum, item) => sum + item.weight, 0);
@@ -132,6 +133,7 @@ export function canSpawnCarPartByTime(context: Pick<SpawnContext, "elapsedMs" | 
 
 export function itemSize(itemId: ItemId, stageWidth: number): number {
   const mobileScale = stageWidth < 760 ? 0.76 : 1;
+  const desktopScale = stageWidth >= 760 ? DESKTOP_ITEM_SCALE : 1;
   const baseSize: Record<ItemId, number> = {
     bill500: 76,
     bill1000: 86,
@@ -147,7 +149,7 @@ export function itemSize(itemId: ItemId, stageWidth: number): number {
     carBody: 104,
     fuelCan: 82,
   };
-  return Math.round(baseSize[itemId] * mobileScale);
+  return Math.round(baseSize[itemId] * mobileScale * desktopScale);
 }
 
 export function itemFallSpeed(itemId: ItemId, level: number, stageHeight: number): number {
